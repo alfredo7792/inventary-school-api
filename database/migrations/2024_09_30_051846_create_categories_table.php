@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->boolean('status')->default(1);
             $table->string('user_created_at');
             $table->string('user_updated_at')->nullable();
@@ -20,9 +20,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('categories');
