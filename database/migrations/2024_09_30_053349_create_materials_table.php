@@ -8,12 +8,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->decimal('stock',5,2);
-            $table->text('image');
+            $table->integer('stock');
+            $table->text('image')->nullable();
             $table->boolean('status')->default(1);
             $table->string('user_created_at');
             $table->string('user_updated_at')->nullable();
@@ -26,6 +26,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('materials');
     }
 };
