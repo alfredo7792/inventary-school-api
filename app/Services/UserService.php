@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Models\Material;
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
-class MaterialService
+class UserService
 {
     public function list($data)
     {
@@ -14,18 +16,19 @@ class MaterialService
             $status = isset($data['status']) ? $data['status'] : null;
             $search = isset($data['search']) ? $data['search'] : null;
 
-            $list = Material::with('category')
+            $list = User::with('role')
                 ->when($status !== null, function ($query) use ($status) {
                     return $query->where('status', $status);
                 })
                 ->when($search !== null, function ($query) use ($search) {
                     return $query->where(function ($query) use ($search) {
-                        $query->where('name', 'like', $search . '%');
+                        $query->where('names', 'like', $search . '%')
+                        ->orWhere('username', 'like', $search . '%');
                     });
                 })
                 ->orderBy('created_at','desc')
                 ->get();
-            return self::successOrErrorResponse(true, 200, "Lista de materiales", $list);
+            return self::successOrErrorResponse(true, 200, "Lista de usuarios", $list);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
         }
@@ -34,19 +37,20 @@ class MaterialService
     public function create($data)
     {
         try {
-            $item = new Material();
+            $item = new User();
             $item->fill($data);
-            if (isset($data['image']) && $data['image']->isValid()) {
-                $file = $data['image'];
-                $fileName = $data['name'] . '.png';
-                $destinationPath = storage_path("app/public/Materials_images");
-                $file->move($destinationPath, $fileName);
-                $item->path_image = 'storage/Materials_images/' . $fileName;
-            }
             $item->user_created_at = "admin@service.com";
             //$item->user_created_at = Auth::user()->email;
             $item->save();
-            return self::successOrErrorResponse(true, 200, "Materiales registrada con éxito", []);
+            if (isset($data['image']) && $data['image']->isValid()) {
+                $file = $data['image'];
+                $fileName = $item->id . '.png';
+                $destinationPath = storage_path("app/public/Users_images");
+                $file->move($destinationPath, $fileName);
+                $item->path_image = 'storage/Users_images/' . $fileName;
+            }
+            $item->save();
+            return self::successOrErrorResponse(true, 200, "Usuario registrado con éxito", []);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
         }
@@ -55,15 +59,15 @@ class MaterialService
     public function update($data)
     {
         try {
-            $item = Material::find($data['id']);
+            $item = User::find($data['id']);
             if (!$item) {
-                throw new ModelNotFoundException('El material no existe');
+                throw new ModelNotFoundException('El usuario no existe');
             }
             $item->fill($data);
             $item->user_updated_at = "admin@service.com";
             //$item->user_updated_at = Auth::user()->email;
             $item->save();
-            return self::successOrErrorResponse(true, 200, "Material actualizado con éxito", []);
+            return self::successOrErrorResponse(true, 200, "Usuario actualizado con éxito", []);
         } catch (ModelNotFoundException $e) {
             return self::successOrErrorResponse(false, 401, $e->getMessage(), []);
         } catch (\Exception $e) {
@@ -74,12 +78,12 @@ class MaterialService
     public function delete($id)
     {
         try {
-            $item = Material::findOrFail($id);
+            $item = User::findOrFail($id);
             $item->status = false;
             $item->save();
-            return self::successOrErrorResponse(true, 200, "Material eliminado con éxito", []);
+            return self::successOrErrorResponse(true, 200, "Usuario eliminado con éxito", []);
         } catch (ModelNotFoundException $e) {
-            return self::successOrErrorResponse(false, 404, "Material no encontrado", []);
+            return self::successOrErrorResponse(false, 404, "Usuario no encontrado", []);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
         }
@@ -88,10 +92,33 @@ class MaterialService
     public function getItem($id)
     {
         try {
-            $item = Material::findOrFail($id);
-            return self::successOrErrorResponse(true, 200, "Material encontrado", $item);
+            $item = User::findOrFail($id);
+            return self::successOrErrorResponse(true, 200, "Usuario encontrado", $item);
         } catch (ModelNotFoundException $e) {
-            return self::successOrErrorResponse(false, 404, "Material no encontrado", []);
+            return self::successOrErrorResponse(false, 404, "Usuario no encontrado", []);
+        } catch (\Exception $e) {
+            return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
+        }
+    }
+
+    public function listRoles($data)
+    {
+        try {
+            $status = isset($data['status']) ? $data['status'] : null;
+            $search = isset($data['search']) ? $data['search'] : null;
+
+            $list = Role::query()
+                ->when($status !== null, function ($query) use ($status) {
+                    return $query->where('status', $status);
+                })
+                ->when($search !== null, function ($query) use ($search) {
+                    return $query->where(function ($query) use ($search) {
+                        $query->where('name', 'like', $search . '%');
+                    });
+                })
+                ->orderBy('created_at','desc')
+                ->get();
+            return self::successOrErrorResponse(true, 200, "Lista de roles", $list);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
         }

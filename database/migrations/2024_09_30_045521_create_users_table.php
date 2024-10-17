@@ -12,12 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('names');
             $table->string('surnames');
-            $table->string('username');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('image');
-            $table->boolean('is_admin');
+            $table->text('image')->nullable();
             $table->boolean('status')->default(1);
             $table->string('user_created_at');
             $table->string('user_updated_at')->nullable();

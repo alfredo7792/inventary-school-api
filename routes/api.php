@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,11 @@ Route::get('/material/get', [MaterialController::class, 'getItem']);
 Route::post('/material/create', [MaterialController::class, 'create']);
 Route::post('/material/update', [MaterialController::class, 'update']);
 Route::delete('/material/delete', [MaterialController::class, 'delete']);
+
+Route::get('/user/list', [UserController::class, 'list']);
+Route::get('/user/get', [UserController::class, 'getItem']);
+Route::post('/user/create', [UserController::class, 'create']);
+Route::post('/user/update', [UserController::class, 'update']);
+Route::delete('/user/delete', [UserController::class, 'delete']);
+
+Route::get('/role/list', [UserController::class, 'listRoles']);
