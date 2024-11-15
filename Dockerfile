@@ -16,7 +16,7 @@ COPY . .
 # Configura las variables de entorno
 ENV APP_ENV=production
 ENV APP_KEY=base64:90tXpRY07sYsEElESgzBzPqa8ZcbjB/eCnfYgQD7+NE=
-ENV APP_DEBUG=false
+ENV APP_DEBUG=true
 ENV APP_URL=http://tu_dominio # Reemplaza con tu dominio
 ENV DB_CONNECTION=sqlite
 # Instala las extensiones de PHP necesarias
