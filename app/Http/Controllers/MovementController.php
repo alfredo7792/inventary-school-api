@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
+use App\Services\MovementService;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class MovementController extends Controller
 {
     private $itemService;
 
-    public function __construct(CategoryService $itemService)
+    public function __construct(MovementService $itemService)
     {
         $this->itemService = $itemService;
     }
@@ -47,9 +47,5 @@ class CategoryController extends Controller
         $itemId = $request->input('id');
         $response = $this->itemService->getItem($itemId);
         return $response;
-    }
-
-    public function prueba(){
-        return "hola";
     }
 }

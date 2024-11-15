@@ -10,17 +10,12 @@ return new class extends Migration
     {
         Schema::create('movements', function (Blueprint $table) {
             $table->id();
-            $table->decimal('quantity',5,2);
-            $table->boolean('type');
+            $table->string('source');
+            $table->string('description')->nullable();
             $table->boolean('status')->default(1);
             $table->string('user_created_at');
             $table->string('user_updated_at')->nullable();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('product_id');
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('materials')->onDelete('cascade');
         });
     }
 

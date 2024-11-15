@@ -25,4 +25,9 @@ class Material extends Model
     {
         return $this->belongsTo(Category::class)->select('id', 'name');
     }
+
+    public function detail_movements()
+    {
+        return $this->hasMany(MovementDetail::class, 'material_id');
+    }
 }

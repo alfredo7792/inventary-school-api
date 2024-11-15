@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MovementController;
 use App\Http\Controllers\UserController;
+use App\Models\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -10,6 +12,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::get('/prueba', [CategoryController::class, 'prueba']);
 
 Route::get('/category/list', [CategoryController::class, 'list']);
 Route::get('/category/get', [CategoryController::class, 'getItem']);
@@ -30,3 +33,9 @@ Route::post('/user/update', [UserController::class, 'update']);
 Route::delete('/user/delete', [UserController::class, 'delete']);
 
 Route::get('/role/list', [UserController::class, 'listRoles']);
+
+Route::get('/movement/list', [MovementController::class, 'list']);
+Route::get('/movement/get', [MovementController::class, 'getItem']);
+Route::post('/movement/create', [MovementController::class, 'create']);
+Route::post('/movement/update', [MovementController::class, 'update']);
+Route::delete('/movement/delete', [MovementController::class, 'delete']);

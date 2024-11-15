@@ -46,7 +46,7 @@ class MaterialService
             $item->user_created_at = "admin@service.com";
             //$item->user_created_at = Auth::user()->email;
             $item->save();
-            return self::successOrErrorResponse(true, 200, "Materiales registrada con éxito", []);
+            return self::successOrErrorResponse(true, 200, "Material registrado con éxito", []);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
         }
