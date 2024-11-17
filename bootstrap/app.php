@@ -17,18 +17,3 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
-
-if (file_exists(database_path('database.sqlite'))) {
-    $source = database_path('database.sqlite');
-    $destination = '/tmp/database.sqlite';
-
-    // Mueve la base de datos a /tmp si no existe ya
-    if (!file_exists($destination)) {
-        copy($source, $destination);
-    }
-
-    // Asegúrate de que Laravel use el archivo en /tmp
-    putenv('DB_DATABASE=' . $destination);
-    config(['database.connections.sqlite.database' => $destination]);
-}
-    
