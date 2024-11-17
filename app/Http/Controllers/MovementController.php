@@ -55,4 +55,9 @@ class MovementController extends Controller
         $response = $this->itemService->getReport($data);
         return $response;
     }
+
+    public function imprimir(){
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('hola');
+        return $pdf->download('hola.pdf');
+    }
 }

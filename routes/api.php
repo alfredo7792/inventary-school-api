@@ -24,6 +24,7 @@ Route::get('/material/get', [MaterialController::class, 'getItem']);
 Route::post('/material/create', [MaterialController::class, 'create']);
 Route::post('/material/update', [MaterialController::class, 'update']);
 Route::delete('/material/delete', [MaterialController::class, 'delete']);
+Route::get('/material/report', [MaterialController::class, 'getReport']);
 
 Route::get('/user/list', [UserController::class, 'list']);
 Route::get('/user/get', [UserController::class, 'getItem']);
@@ -39,3 +40,4 @@ Route::post('/movement/create', [MovementController::class, 'create']);
 Route::post('/movement/update', [MovementController::class, 'update']);
 Route::delete('/movement/delete', [MovementController::class, 'delete']);
 Route::get('/movement/report', [MovementController::class, 'getReport']);
+Route::get('/movement/imprimir', [MovementController::class, 'imprimir']);

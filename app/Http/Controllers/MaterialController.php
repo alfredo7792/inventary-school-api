@@ -48,4 +48,11 @@ class MaterialController extends Controller
         $response = $this->itemService->getItem($itemId);
         return $response;
     }
+
+    public function getReport(Request $request)
+    {
+        $itemId = $request->input('id');
+        $response = $this->itemService->getReport($itemId);
+        return $response;
+    }
 }
