@@ -165,11 +165,19 @@ class MovementService
         }
     }
 
-    public function getReport()
+    public function getReport($data)
     {
         try {
-            $items = Movement::where('status',1)->get();            
-            return self::successOrErrorResponse(true, 200, "Movimientos encontrado", $items);
+            $startTimestamp = date('Y-m-d', strtotime($data['date_init'])); // Formato YYYY-MM-DD
+            $endTimestamp = date('Y-m-d', strtotime($data['date_finish'])); // Formato YYYY-MM-DD
+
+            $items = Movement::with('movementDetails')
+                ->where('status', 1)
+                ->whereDate('created_at', '>=', $startTimestamp)
+                ->whereDate('created_at', '<=', $endTimestamp)
+                ->get();
+
+            return self::successOrErrorResponse(true, 200, "Movimientos encontrados", $items);
         } catch (ModelNotFoundException $e) {
             return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
         } catch (\Exception $e) {

@@ -48,4 +48,11 @@ class MovementController extends Controller
         $response = $this->itemService->getItem($itemId);
         return $response;
     }
+
+    public function getReport(Request $request)
+    {
+        $data = $request->all();
+        $response = $this->itemService->getReport($data);
+        return $response;
+    }
 }

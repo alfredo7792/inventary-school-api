@@ -4,7 +4,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\UserController;
-use App\Models\Movement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,3 +38,4 @@ Route::get('/movement/get', [MovementController::class, 'getItem']);
 Route::post('/movement/create', [MovementController::class, 'create']);
 Route::post('/movement/update', [MovementController::class, 'update']);
 Route::delete('/movement/delete', [MovementController::class, 'delete']);
+Route::get('/movement/report', [MovementController::class, 'getReport']);
