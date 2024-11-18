@@ -45,7 +45,7 @@
         <table>
             <thead>
             <tr>
-                <th>ID</th>
+                <th>N°</th>
                 <th>Origen</th>
                 <th>Material</th>
                 <th>Tipo</th>
@@ -54,15 +54,21 @@
             </tr>
             </thead>
             <tbody>
+              @php
+                  $orden = 1;
+              @endphp
             @foreach ($movements->detail_movements as $movementDetail)
                 <tr>
-                <td>{{ $movementDetail->movement_id }}</td>
+                <td>{{ $orden }}</td>
                 <td>{{ $movementDetail->movement->source }}</td>
                 <td>{{ $movementDetail->material->name }}</td>
                 <td>{{ $movementDetail->type == 1 ?'INGRESO' : 'SALIDA' }}</td>
                 <td>{{ $movementDetail->quantity }}</td>
                 <td>{{ $movementDetail->created_at }}</td>
                 </tr>
+              @php
+                  $orden++;
+              @endphp
             @endforeach
             </tbody>
         </table>

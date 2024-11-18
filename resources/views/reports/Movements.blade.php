@@ -109,10 +109,9 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>N°</th>
                                 <th>Fuente</th>
                                 <th>Descripción</th>
-                                <th>Estado</th>
                                 <th>Usuario que creó</th>
                                 <th>Fecha de Creación</th>
                             </tr>
@@ -122,7 +121,6 @@
                                 <td>{{ $movimiento->id }}</td>
                                 <td>{{ $movimiento->source }}</td>
                                 <td>{{ $movimiento->description ?? '-' }}</td>
-                                <td>{{ $movimiento->status == 1 ? 'Activo' : 'Inactivo' }}</td>
                                 <td>{{ $movimiento->user_created_at }}</td>
                                 <td>{{ $movimiento->created_at }}</td>
                             </tr>
@@ -134,7 +132,7 @@
                             <table class="details-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>N°</th>
                                         <th>Material</th>
                                         <th>Tipo</th>
                                         <th>Cantidad</th>
@@ -142,14 +140,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $ordenDetalle = 1; // Inicializa el contador de orden
+                                    @endphp
                                     @foreach ($movimiento->movementDetails as $detalle)
                                         <tr>
-                                            <td>{{ $detalle->id }}</td>
+                                            <td>{{ $ordenDetalle }}</td>
                                             <td>{{ $detalle->material_id }}</td>
-                                            <td>{{ $detalle->type }}</td>
+                                            <td>{{ $detalle->type == 1 ? 'INGRESO': 'SALIDA' }}</td>
                                             <td>{{ $detalle->quantity }}</td>
                                             <td>{{ $detalle->status == 1 ? 'Activo' : 'Inactivo' }}</td>
                                         </tr>
+                                        @php
+                                            $ordenDetalle++; // Inicializa el contador de orden
+                                        @endphp
                                     @endforeach
                                 </tbody>
                             </table>
