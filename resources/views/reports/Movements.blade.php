@@ -136,7 +136,6 @@
                                         <th>Material</th>
                                         <th>Tipo</th>
                                         <th>Cantidad</th>
-                                        <th>Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -149,7 +148,6 @@
                                             <td>{{ $detalle->material_id }}</td>
                                             <td>{{ $detalle->type == 1 ? 'INGRESO': 'SALIDA' }}</td>
                                             <td>{{ $detalle->quantity }}</td>
-                                            <td>{{ $detalle->status == 1 ? 'Activo' : 'Inactivo' }}</td>
                                         </tr>
                                         @php
                                             $ordenDetalle++; // Inicializa el contador de orden
