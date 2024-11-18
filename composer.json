@@ -7,8 +7,6 @@
     "require": {
         "php": "^8.2",
         "ext-openssl": "*",
-        "ext-gd": "*",
-        "ext-mbstring": "*",
         "barryvdh/laravel-dompdf": "^3.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
