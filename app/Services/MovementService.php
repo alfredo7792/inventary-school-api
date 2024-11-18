@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Material;
 use App\Models\Movement;
 use App\Models\MovementDetail;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
@@ -165,11 +166,27 @@ class MovementService
         }
     }
 
-    public function getReport()
+    public function getReport($data)
     {
         try {
-            $items = Movement::where('status',1)->get();            
-            return self::successOrErrorResponse(true, 200, "Movimientos encontrado", $items);
+            $startTimestamp = date('Y-m-d', strtotime($data['date_init']));
+            $endTimestamp = date('Y-m-d', strtotime($data['date_finish'])); 
+
+            $movements = Movement::with('movementDetails')
+                ->where('status', 1)
+                ->whereDate('created_at', '>=', $startTimestamp)
+                ->whereDate('created_at', '<=', $endTimestamp)
+                ->get();
+
+            if ($movements->isEmpty()) {
+                return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
+            }
+            $date_init = date('d-m-Y', strtotime($data['date_init']));
+            $date_finish = date('d-m-Y', strtotime($data['date_finish']));
+
+            $pdf = Pdf::loadView('reports.Movements', ['movements' => $movements, 'date_init' =>$date_init, 'date_finish' =>$date_finish]);
+
+            return $pdf->download('hola.pdf');
         } catch (ModelNotFoundException $e) {
             return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
         } catch (\Exception $e) {

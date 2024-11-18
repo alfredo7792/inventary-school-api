@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Material;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 
@@ -92,6 +94,28 @@ class MaterialService
             return self::successOrErrorResponse(true, 200, "Material encontrado", $item);
         } catch (ModelNotFoundException $e) {
             return self::successOrErrorResponse(false, 404, "Material no encontrado", []);
+        } catch (\Exception $e) {
+            return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
+        }
+    }
+
+    public function getReport($id)
+    {
+        try {
+            $today = Carbon::now();
+            $sixMonthsAgo = Carbon::now()->subMonths(6);
+
+            $movements = Material::with(['detail_movements' => function($query) use($today, $sixMonthsAgo) {
+                $query
+                    ->whereDate('created_at', '>=', $sixMonthsAgo->toDateString())
+                    ->whereDate('created_at', '<=', $today->toDateString());
+            }])->findOrFail($id);
+
+            $pdf = Pdf::loadView('reports.Material', ['movements' => $movements]);
+
+            return $pdf->download('hola.pdf');
+        } catch (ModelNotFoundException $e) {
+            return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
         }

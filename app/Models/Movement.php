@@ -14,7 +14,7 @@ class Movement extends Model
         'description',
         'status',
         'user_created_at',
-        'user_updated_at'
+        'user_updated_at',
     ];
 
     public function movementDetails()

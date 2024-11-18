@@ -48,4 +48,16 @@ class MovementController extends Controller
         $response = $this->itemService->getItem($itemId);
         return $response;
     }
+
+    public function getReport(Request $request)
+    {
+        $data = $request->all();
+        $response = $this->itemService->getReport($data);
+        return $response;
+    }
+
+    public function imprimir(){
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('hola');
+        return $pdf->download('hola.pdf');
+    }
 }
