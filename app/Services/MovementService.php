@@ -181,12 +181,14 @@ class MovementService
             if ($movements->isEmpty()) {
                 return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
             }
-            $date_init = date('d-m-Y', strtotime($data['date_init']));
-            $date_finish = date('d-m-Y', strtotime($data['date_finish']));
+            // $date_init = date('d-m-Y', strtotime($data['date_init']));
+            // $date_finish = date('d-m-Y', strtotime($data['date_finish']));
 
-            $pdf = Pdf::loadView('reports.Movements', ['movements' => $movements, 'date_init' =>$date_init, 'date_finish' =>$date_finish]);
+            // $pdf = Pdf::loadView('reports.Movements', ['movements' => $movements, 'date_init' =>$date_init, 'date_finish' =>$date_finish]);
 
-            return $pdf->download('hola.pdf');
+            // return $pdf->download('hola.pdf');
+
+            return self::successOrErrorResponse(true, 200, "Movimientos encontrados", $movements);
         } catch (ModelNotFoundException $e) {
             return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
         } catch (\Exception $e) {
