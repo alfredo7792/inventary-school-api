@@ -111,9 +111,9 @@ class MaterialService
                     ->whereDate('created_at', '<=', $today->toDateString());
             }])->findOrFail($id);
 
-            $pdf = Pdf::loadView('reports.Material', ['movements' => $movements]);
-
-            return $pdf->download('hola.pdf');
+            // $pdf = Pdf::loadView('reports.Material', ['movements' => $movements]);
+            // return $pdf->download('hola.pdf');
+            return self::successOrErrorResponse(true, 200, "Movimientos encontrados", $movements);
         } catch (ModelNotFoundException $e) {
             return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
         } catch (\Exception $e) {
