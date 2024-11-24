@@ -7,6 +7,7 @@ use App\Models\Movement;
 use App\Models\MovementDetail;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MovementService
@@ -42,8 +43,7 @@ class MovementService
             unset($data['movements']);
             $item = new Movement();
             $item->fill($data);
-            $item->user_created_at = "admin@service.com";
-            //$item->user_created_at = Auth::user()->email;
+            $item->user_created_at = Auth::user()->email;
             $item->save();
             foreach ($movements as $movementDetailData) {
                 $movementDetail = new MovementDetail();
@@ -82,6 +82,7 @@ class MovementService
 
             $item = Movement::find($data['id']);
             $item->fill($data);
+            $item->user_updated_at = Auth::user()->email;
             $item->save();
 
             foreach ($item->movementDetails as $movementDetail) {
