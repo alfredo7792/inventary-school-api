@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\JWTMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -11,7 +13,12 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/prueba', [CategoryController::class, 'prueba']);
+Route::post('/login', [AuthController::class, 'loginAdmin']);
+
+Route::middleware([JWTMiddleware::class])->group(function () {
+    Route::get('/prueba', [CategoryController::class, 'prueba']);
+});
+
 
 Route::get('/category/list', [CategoryController::class, 'list']);
 Route::get('/category/get', [CategoryController::class, 'getItem']);
