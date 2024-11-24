@@ -45,8 +45,7 @@ class MaterialService
                 $file->move($destinationPath, $fileName);
                 $item->path_image = 'storage/Materials_images/' . $fileName;
             }
-            $item->user_created_at = "admin@service.com";
-            //$item->user_created_at = Auth::user()->email;
+            $item->user_created_at = Auth::user()->email;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Material registrado con éxito", []);
         } catch (\Exception $e) {
@@ -62,8 +61,7 @@ class MaterialService
                 throw new ModelNotFoundException('El material no existe');
             }
             $item->fill($data);
-            $item->user_updated_at = "admin@service.com";
-            //$item->user_updated_at = Auth::user()->email;
+            $item->user_updated_at = Auth::user()->email;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Material actualizado con éxito", []);
         } catch (ModelNotFoundException $e) {
@@ -77,6 +75,7 @@ class MaterialService
     {
         try {
             $item = Material::findOrFail($id);
+            $item->user_updated_at = Auth::user()->email;
             $item->status = false;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Material eliminado con éxito", []);

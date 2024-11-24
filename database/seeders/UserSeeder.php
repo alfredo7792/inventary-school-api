@@ -12,13 +12,13 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'names' => 'Jose',
-            'surnames' => 'Buenaventura',
-            'email' => 'prueba@hotmail.com',
+            'names' => 'Jose Breisem',
+            'surnames' => 'Torres Villavicencio',
+            'email' => 'admin@ierp.edu.pe',
             'password' => Hash::make('12345678'),
             'status' => 1,
-            'user_created_at' => 'admin@service.com',
-            'user_updated_at' => 'admin@service.com',
+            'user_created_at' => 'admin@ierp.edu.pe',
+            'user_updated_at' => 'admin@ierp.edu.pe',
             'role_id' => 1
         ]);
     }

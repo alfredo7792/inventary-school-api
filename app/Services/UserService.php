@@ -39,8 +39,7 @@ class UserService
         try {
             $item = new User();
             $item->fill($data);
-            $item->user_created_at = "admin@service.com";
-            //$item->user_created_at = Auth::user()->email;
+            $item->user_created_at = Auth::user()->email;
             $item->save();
             if (isset($data['image']) && $data['image']->isValid()) {
                 $file = $data['image'];
@@ -64,8 +63,7 @@ class UserService
                 throw new ModelNotFoundException('El usuario no existe');
             }
             $item->fill($data);
-            $item->user_updated_at = "admin@service.com";
-            //$item->user_updated_at = Auth::user()->email;
+            $item->user_updated_at = Auth::user()->email;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Usuario actualizado con éxito", []);
         } catch (ModelNotFoundException $e) {
@@ -79,6 +77,7 @@ class UserService
     {
         try {
             $item = User::findOrFail($id);
+            $item->user_updated_at = Auth::user()->email;
             $item->status = false;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Usuario eliminado con éxito", []);

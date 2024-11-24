@@ -43,8 +43,7 @@ class CategoryService
                 $file->move($destinationPath, $fileName);
                 $item->path_image = 'storage/Categories_images/' . $fileName;
             }
-            $item->user_created_at = "admin@service.com";
-            //$item->user_created_at = Auth::user()->email;
+            $item->user_created_at = Auth::user()->email;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Categoría registrada con éxito", []);
         } catch (\Exception $e) {
@@ -60,8 +59,7 @@ class CategoryService
                 throw new ModelNotFoundException('La categoria no existe');
             }
             $item->fill($data);
-            $item->user_updated_at = "admin@service.com";
-            //$item->user_updated_at = Auth::user()->email;
+            $item->user_updated_at = Auth::user()->email;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Categoría actualizada con éxito", []);
         } catch (ModelNotFoundException $e) {
@@ -75,6 +73,7 @@ class CategoryService
     {
         try {
             $item = Category::findOrFail($id);
+            $item->user_updated_at = Auth::user()->email;
             $item->status = false;
             $item->save();
             return self::successOrErrorResponse(true, 200, "Categoría eliminada con éxito", []);
