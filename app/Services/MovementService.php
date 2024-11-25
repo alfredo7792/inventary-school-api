@@ -173,11 +173,13 @@ class MovementService
             $startTimestamp = date('Y-m-d', strtotime($data['date_init']));
             $endTimestamp = date('Y-m-d', strtotime($data['date_finish'])); 
 
-            $movements = Movement::with('movementDetails')
-                ->where('status', 1)
-                ->whereDate('created_at', '>=', $startTimestamp)
-                ->whereDate('created_at', '<=', $endTimestamp)
-                ->get();
+            $movements = Movement::with(['movementDetails' => function ($query) {
+                $query->with('material');
+            }])
+                            ->where('status', 1)
+                            ->whereDate('created_at', '>=', $startTimestamp)
+                            ->whereDate('created_at', '<=', $endTimestamp)
+                            ->get();
 
             if ($movements->isEmpty()) {
                 return self::successOrErrorResponse(false, 404, "Movimientos no encontrados", []);
