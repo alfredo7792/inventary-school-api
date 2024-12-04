@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\UserController;
@@ -46,6 +47,8 @@ Route::middleware([JWTMiddleware::class])->group(function () {
     Route::delete('/movement/delete', [MovementController::class, 'delete']);
     Route::get('/movement/report', [MovementController::class, 'getReport']);
     Route::get('/movement/imprimir', [MovementController::class, 'imprimir']);
+
+    Route::get('/dashboard/list', [DashboardController::class, 'getData']);
 });
 
 
