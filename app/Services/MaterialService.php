@@ -22,7 +22,8 @@ class MaterialService
                 })
                 ->when($search !== null, function ($query) use ($search) {
                     return $query->where(function ($query) use ($search) {
-                        $query->where('name', 'like', $search . '%');
+                        $query->where('name', 'like', $search . '%')
+                        ->orWhere('id', (int) ltrim($search, '0'), '=', $search);
                     });
                 })
                 ->orderBy('created_at','desc')
