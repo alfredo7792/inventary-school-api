@@ -7,6 +7,7 @@ use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MovementController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\JWTMiddleware;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,4 +52,6 @@ Route::middleware([JWTMiddleware::class])->group(function () {
     Route::get('/dashboard/list', [DashboardController::class, 'getData']);
 });
 
-
+Route::get('/cron_prueba_activacion_80010_job', function () {
+    return Role::all()->first();
+});
