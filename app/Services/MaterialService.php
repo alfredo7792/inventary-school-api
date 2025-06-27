@@ -15,19 +15,28 @@ class MaterialService
         try {
             $status = isset($data['status']) ? $data['status'] : null;
             $search = isset($data['search']) ? $data['search'] : null;
+            $perPage = isset($data['per_page']) ? $data['per_page'] : null;
 
-            $list = Material::with('category')
+            $query = Material::with('category')
                 ->when($status !== null, function ($query) use ($status) {
                     return $query->where('status', $status);
                 })
                 ->when($search !== null, function ($query) use ($search) {
                     return $query->where(function ($query) use ($search) {
-                        $query->where('name', 'like', $search . '%')
-                        ->orWhere('id', (int) ltrim($search, '0'), '=', $search);
+                        $query->where('name', 'like', $search . '%');
+                        /* ->orWhere('id', (int) ltrim($search, '0'), '=', $search); */
                     });
                 })
-                ->orderBy('created_at','desc')
-                ->get();
+                ->orderBy('created_at','desc');
+
+            if($perPage){
+                $list = $query->paginate((int)$perPage);
+            }else{
+                if(!isset($search)){
+                    $query->limit(8);
+                }
+                $list = $query->get();
+            }
             return self::successOrErrorResponse(true, 200, "Lista de materiales", $list);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
