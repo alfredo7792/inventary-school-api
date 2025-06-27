@@ -17,8 +17,9 @@ class MovementService
         try {
             $status = isset($data['status']) ? $data['status'] : null;
             $search = isset($data['search']) ? $data['search'] : null;
+            $perPage = isset($data['per_page']) ? $data['per_page'] : null;
 
-            $list = Movement::with('movementDetails')
+            $query = Movement::with('movementDetails')
                 ->when($status !== null, function ($query) use ($status) {
                     return $query->where('status', $status);
                 })
@@ -27,8 +28,14 @@ class MovementService
                         $query->where('source', 'like', $search . '%');
                     });
                 })
-                ->orderBy('created_at','desc')
-                ->get();
+                ->orderBy('created_at','desc');
+
+            if($perPage){
+                $list = $query->paginate((int)$perPage);
+            }else{
+                $list = $query->get();
+            }
+
             return self::successOrErrorResponse(true, 200, "Lista de movimientos", $list);
         } catch (\Exception $e) {
             return self::successOrErrorResponse(false, 500, 'Ocurrió un error: ' . $e->getMessage(), []);
